@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>Site theLaunch — Static Website Hosting</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Site theLaunch home">
+        <span class="brand-mark">↗</span><span>Site <strong>theLaunch</strong></span>
+      </a>
+      <nav class="top-actions">
+        <a href="https://developers.cloudflare.com/pages/get-started/" target="_blank" rel="noreferrer">Hosting guide ↗</a>
+        <button id="logoutBtn" class="button button-quiet hidden">Sign out</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="authView" class="auth-layout">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="pulse"></span> YOUR IDEAS, LIVE ON THE WEB</span>
+          <h1>Launch your next<br><span class="gradient-text">website project.</span></h1>
+          <p class="hero-sub">A simple home for your static websites. Upload a project or save a Git repository, then connect a hosting provider to publish it.</p>
+          <div class="feature-row">
+            <div class="feature"><span class="feature-icon">⌘</span><div><b>Git-ready</b><small>GitHub & GitLab repos</small></div></div>
+            <div class="feature"><span class="feature-icon">⇧</span><div><b>File uploads</b><small>Static site ZIPs</small></div></div>
+            <div class="feature"><span class="feature-icon">◎</span><div><b>Project dashboard</b><small>Keep things organized</small></div></div>
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <div class="auth-tabs">
+            <button class="tab active" id="loginTab">Sign in</button>
+            <button class="tab" id="registerTab">Create account</button>
+          </div>
+          <form id="authForm">
+            <div id="nameField" class="field hidden"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" placeholder="Alex Morgan"></div>
+            <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+            <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" minlength="10" placeholder="At least 10 characters" required></div>
+            <p id="authMessage" class="message" role="status"></p>
+            <button id="authSubmit" class="button button-primary full-width" type="submit">Sign in <span>→</span></button>
+          </form>
+          <p class="fine-print">By continuing, you agree to use the platform responsibly. This starter is a development MVP, not yet a production hosting provider.</p>
+        </div>
+      </section>
+
+      <section id="dashboardView" class="dashboard hidden">
+        <div class="dashboard-heading">
+          <div><p class="eyebrow">WORKSPACE / OVERVIEW</p><h1>Good to see you, <span id="userName">there</span>.</h1><p class="muted">Manage your static website projects from one place.</p></div>
+          <button id="newProjectBtn" class="button button-primary">＋ New project</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-label">Total projects</span><strong id="projectCount">0</strong><span class="stat-foot">In your workspace</span></article>
+          <article class="stat-card"><span class="stat-label">Git repositories</span><strong id="gitCount">0</strong><span class="stat-foot">Ready to connect</span></article>
+          <article class="stat-card"><span class="stat-label">File uploads</span><strong id="uploadCount">0</strong><span class="stat-foot">Private project archives</span></article>
+        </div>
+
+        <section id="newProjectPanel" class="panel hidden">
+          <div class="panel-heading"><div><h2>Create a project</h2><p class="muted">Choose how you want to add your site.</p></div><button id="closePanelBtn" class="icon-button" aria-label="Close">×</button></div>
+          <div class="project-tabs"><button id="uploadTab" class="tab active">Upload ZIP</button><button id="gitTab" class="tab">Connect Git repository</button></div>
+          <form id="uploadForm">
+            <div class="field"><label for="uploadName">Project name</label><input id="uploadName" name="name" placeholder="my-portfolio" minlength="2" maxlength="48" required></div>
+            <div class="field"><label for="siteZip">Website ZIP file (max 10 MB)</label><input id="siteZip" name="siteZip" type="file" accept=".zip,application/zip" required><small>Include an index.html file at the top level of your ZIP. The archive is stored privately; this starter does not deploy it yet.</small></div>
+            <p id="uploadMessage" class="message" role="status"></p>
+            <button class="button button-primary" type="submit">Save upload <span>→</span></button>
+          </form>
+          <form id="gitForm" class="hidden">
+            <div class="field"><label for="gitName">Project name</label><input id="gitName" name="name" placeholder="my-portfolio" minlength="2" maxlength="48" required></div>
+            <div class="field"><label for="sourceUrl">GitHub or GitLab repository URL</label><input id="sourceUrl" name="sourceUrl" type="url" placeholder="https://github.com/owner/repository" required><small>Use an HTTPS repository URL. Private repositories need provider authorization before deployment.</small></div>
+            <p id="gitMessage" class="message" role="status"></p>
+            <button class="button button-primary" type="submit">Save repository <span>→</span></button>
+          </form>
+        </section>
+
+        <section class="projects-section">
+          <div class="section-heading"><div><h2>Your projects</h2><p class="muted">Your saved sites and their current setup status.</p></div><div class="search-wrap"><span>⌕</span><input id="projectSearch" placeholder="Search projects" aria-label="Search projects"></div></div>
+          <div id="projectsList" class="projects-grid"></div>
+          <div id="emptyState" class="empty-state"><div class="empty-art">↗</div><h3>Your first launch starts here</h3><p>Create a project by uploading a ZIP or saving a Git repository.</p><button id="emptyCreateBtn" class="button button-primary">Create your first project</button></div>
+        </section>
+        <aside class="notice"><span class="notice-icon">i</span><div><strong>Publishing is not connected yet</strong><p>This MVP saves projects and uploaded ZIP files. To publish websites publicly, connect a hosting provider and configure its deployment API or Git integration. See the <a href="https://developers.cloudflare.com/pages/get-started/" target="_blank" rel="noreferrer">Cloudflare Pages guide</a>.</p></div></aside>
+      </section>
+    </main>
+    <footer><span>© <span id="year"></span> Site theLaunch</span><span>Build something worth sharing.</span></footer>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
